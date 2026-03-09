@@ -1,36 +1,39 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+[![GitHub](https://custom-icon-badges.demolab.com/badge/WFAS-blue?logo=wfas&style=for-the-badge)](https://github.com/soamn/wfas)
+[![GitHub](https://custom-icon-badges.demolab.com/badge/WFAS-Server-blue?logo=wfas&style=for-the-badge)](https://github.com/soamn/wfas-server)
+[![GitHub](https://custom-icon-badges.demolab.com/badge/WFAS-Engine-blue?logo=wfas-ui&style=for-the-badge)](https://github.com/soamn/wfas-engine)
+![GitHub License](https://img.shields.io/github/license/soamn/wfas-ui?style=for-the-badge&labelColor=yellow&link=https%3A%2F%2Fgithub.com%2Fsoamn%2Fwfas-ui%3Ftab%3DGPL-3.0-1-ov-file)
+![GitHub Tag](https://img.shields.io/github/v/tag/soamn/wfas-ui)
+![GitHub Repo stars](https://img.shields.io/github/stars/soamn/wfas-ui)
 
-## Getting Started
+# WFAS UI
 
-First, run the development server:
+### Workflow Automation System UI
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+Frontend Application For Wfas Application Made WIth Awesome Libraries ❤️
+
+---
+
+<div align="center">
+
+Mentions ❤️
+
+[React Flow](https://reactflow.dev/) · [Gsap](https://gsap.com/) · [Lexical](https://lexical.dev/) · [Tanstack Table](https://tanstack.com/table/latest) · [axios](https://axios-http.com/) · [Zod](https://zod.dev/) · [Zustand](https://zustand-demo.pmnd.rs/) · [React Hot Toast](https://react-hot-toast.com/) · [React Split Pane](https://github.com/tomkp/react-split-pane#readme) · [React icons](https://react-icons.github.io/react-icons/)
+
+</div>
+
+---
+
+## Local Setup
+
+To Run You would need wfas-server and wfas-engine setup as well.
+
 ```
+cp .env.example .env
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+pnpm install
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+pnpm run build
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+pnpm run start
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```
