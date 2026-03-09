@@ -57,7 +57,6 @@ export const metadata: Metadata = {
     images: ["/opengraph-image.png"],
   },
 
-  metadataBase: new URL(config.DOMAIN),
   manifest: "/manifest.json",
 };
 

@@ -19,14 +19,12 @@ const Page = () => {
   const storeAuthData = useAuthStore((s) => s.storeAuthData);
   const user = useAuthStore((s) => s.user);
 
-  // Redirect if already logged in
   useEffect(() => {
     if (user) {
       router.push("/");
     }
   }, [user, router]);
 
-  // Live validation for email
   useEffect(() => {
     const result = loginSchema.shape.email.safeParse(email);
     if (!email) {
@@ -36,10 +34,8 @@ const Page = () => {
     } else {
       setEmailError(null);
     }
-    // setFormError(null); // Removed: formError should be cleared on input change or form submission
   }, [email]);
 
-  // Live validation for password
   useEffect(() => {
     const result = loginSchema.shape.password.safeParse(password);
     if (!password) {
@@ -49,10 +45,8 @@ const Page = () => {
     } else {
       setPasswordError(null);
     }
-    // setFormError(null); // Removed: formError should be cleared on input change or form submission
   }, [password]);
 
-  // Check overall form validity
   useEffect(() => {
     const overallResult = loginSchema.safeParse({ email, password });
     setIsValid(overallResult.success);
@@ -60,25 +54,32 @@ const Page = () => {
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
-    setFormError(null); // Clear form error on input change
+    setFormError(null);
   };
 
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value);
-    setFormError(null); // Clear form error on input change
+    setFormError(null);
   };
 
-
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleLogin = async (e: any) => {
     e.preventDefault();
-    setFormError(null); // Clear form error on submission attempt
+    setFormError(null);
 
-    // Final validation before submission
     const overallResult = loginSchema.safeParse({ email, password });
     if (!overallResult.success) {
-      // Set individual errors if they are not already set by live validation
-      if (!emailError) setEmailError(loginSchema.shape.email.safeParse(email).success ? null : "Invalid email");
-      if (!passwordError) setPasswordError(loginSchema.shape.password.safeParse(password).success ? null : "Invalid password");
+      if (!emailError)
+        setEmailError(
+          loginSchema.shape.email.safeParse(email).success
+            ? null
+            : "Invalid email",
+        );
+      if (!passwordError)
+        setPasswordError(
+          loginSchema.shape.password.safeParse(password).success
+            ? null
+            : "Invalid password",
+        );
       setFormError("Please correct the errors in the form.");
       return;
     }
@@ -89,7 +90,7 @@ const Page = () => {
       router.push("/");
     } catch (error: any) {
       if (error.response) {
-        setFormError(error.response.data?.message || "Login failed");
+        setFormError(error.response.data.error?.message || "Login failed");
       } else if (error.request) {
         setFormError("Server not responding. Please try again later.");
       } else {

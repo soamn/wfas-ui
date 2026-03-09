@@ -49,7 +49,7 @@ export default function TransformNode({
                   {transforms[0].originalPath || "root"}
                 </span>
                 <HiArrowRight className="size-2 text-pink-400 shrink-0" />
-                <span className="text-[9px] font-mono font-bold text-zinc-700 dark:text-zinc-200 truncate max-w-[60px]">
+                <span className="text-[9px] font-mono font-bold text-zinc-700 dark:text-zinc-200 truncate max-w-15">
                   {transforms[0].changedKey}
                 </span>
               </div>

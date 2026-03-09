@@ -170,7 +170,7 @@ export function TriggerMenu({ id }: { id: string }) {
             onClick={() => handleTypeChange("manual")}
             className={`flex items-center justify-center gap-2 py-2.5 rounded-xl text-xs font-bold transition-all duration-200 ${
               config.triggerType === "manual"
-                ? "bg-white dark:bg-zinc-800 text-blue-600 dark:text-blue-400 shadow-sm ring-1 ring-black/[0.03] dark:ring-white/[0.05]"
+                ? "bg-white dark:bg-zinc-800 text-blue-600 dark:text-blue-400 shadow-sm ring-1 ring-black/3 dark:ring-white/5"
                 : "text-slate-500 dark:text-zinc-500 hover:text-slate-700 dark:hover:text-zinc-300"
             }`}
           >
@@ -182,7 +182,7 @@ export function TriggerMenu({ id }: { id: string }) {
             onClick={() => handleTypeChange("schedule")}
             className={`flex items-center justify-center gap-2 py-2.5 rounded-xl text-xs font-bold transition-all duration-200 ${
               config.triggerType === "schedule"
-                ? "bg-white dark:bg-zinc-800 text-emerald-600 dark:text-emerald-400 shadow-sm ring-1 ring-black/[0.03] dark:ring-white/[0.05]"
+                ? "bg-white dark:bg-zinc-800 text-emerald-600 dark:text-emerald-400 shadow-sm ring-1 ring-black/3 dark:ring-white/5"
                 : "text-slate-500 dark:text-zinc-500 hover:text-slate-700 dark:hover:text-zinc-300"
             }`}
           >
@@ -282,7 +282,7 @@ export function TriggerMenu({ id }: { id: string }) {
           <h4 className="text-[11px] font-bold text-slate-700 dark:text-zinc-400 uppercase tracking-wider mb-2">
             On-Demand Execution
           </h4>
-          <p className="text-[10px] text-slate-400 dark:text-zinc-600 leading-relaxed max-w-[160px]">
+          <p className="text-[10px] text-slate-400 dark:text-zinc-600 leading-relaxed max-w-40">
             This flow is passive and requires a manual signal to start.
           </p>
         </div>

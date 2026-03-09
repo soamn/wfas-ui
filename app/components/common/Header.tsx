@@ -79,7 +79,7 @@ const Header = () => {
                   </button>
                   <button
                     onClick={async () => {
-                      await logoutRequest(user);
+                      await logoutRequest();
                       logout();
                       router.refresh();
                       setIsMenuOpen(false);

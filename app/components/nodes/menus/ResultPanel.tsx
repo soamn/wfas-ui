@@ -166,7 +166,7 @@ export function ResultPanel({
           )}
 
           <div
-            className={`result-card rounded-2xl border transition-all duration-500 bg-zinc-900 ${
+            className={`result-card rounded-2xl border transition-all duration-500 dark:bg-zinc-900  ${
               !currentResult
                 ? "border-zinc-800  italic"
                 : "border-emerald-500/50 "

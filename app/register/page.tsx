@@ -21,14 +21,12 @@ const Page = () => {
   const storeAuthData = useAuthStore((s) => s.storeAuthData);
   const user = useAuthStore((s) => s.user);
 
-  // Redirect if already logged in
   useEffect(() => {
     if (user) {
       router.push("/");
     }
   }, [user, router]);
 
-  // Live validation for name
   useEffect(() => {
     const result = registerSchema.shape.name.safeParse(name);
     if (!name) {
@@ -38,10 +36,8 @@ const Page = () => {
     } else {
       setNameError(null);
     }
-    // setFormError(null); // Removed
   }, [name]);
 
-  // Live validation for email
   useEffect(() => {
     const result = registerSchema.shape.email.safeParse(email);
     if (!email) {
@@ -51,10 +47,8 @@ const Page = () => {
     } else {
       setEmailError(null);
     }
-    // setFormError(null); // Removed
   }, [email]);
 
-  // Live validation for password
   useEffect(() => {
     const result = registerSchema.shape.password.safeParse(password);
     if (!password) {
@@ -64,10 +58,8 @@ const Page = () => {
     } else {
       setPasswordError(null);
     }
-    // setFormError(null); // Removed
   }, [password]);
 
-  // Check overall form validity
   useEffect(() => {
     const overallResult = registerSchema.safeParse({ name, email, password });
     setIsValid(overallResult.success);
@@ -75,30 +67,43 @@ const Page = () => {
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value);
-    setFormError(null); // Clear form error on input change
+    setFormError(null);
   };
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
-    setFormError(null); // Clear form error on input change
+    setFormError(null);
   };
 
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value);
-    setFormError(null); // Clear form error on input change
+    setFormError(null);
   };
 
-
-  const handleRegister = async (e: React.FormEvent) => {
+  const handleRegister = async (e: any) => {
     e.preventDefault();
-    setFormError(null); // Clear form error on submission attempt
+    setFormError(null);
 
     const overallResult = registerSchema.safeParse({ name, email, password });
     if (!overallResult.success) {
-      // Set individual errors if they are not already set by live validation
-      if (!nameError) setNameError(registerSchema.shape.name.safeParse(name).success ? null : "Invalid name");
-      if (!emailError) setEmailError(registerSchema.shape.email.safeParse(email).success ? null : "Invalid email");
-      if (!passwordError) setPasswordError(registerSchema.shape.password.safeParse(password).success ? null : "Invalid password");
+      if (!nameError)
+        setNameError(
+          registerSchema.shape.name.safeParse(name).success
+            ? null
+            : "Invalid name",
+        );
+      if (!emailError)
+        setEmailError(
+          registerSchema.shape.email.safeParse(email).success
+            ? null
+            : "Invalid email",
+        );
+      if (!passwordError)
+        setPasswordError(
+          registerSchema.shape.password.safeParse(password).success
+            ? null
+            : "Invalid password",
+        );
       setFormError("Please correct the errors in the form.");
       return;
     }
@@ -106,7 +111,7 @@ const Page = () => {
     try {
       const res = await registerRequest({ name, email, password });
       storeAuthData(res.data.user);
-      router.push("/");
+      router.push("/dashboard");
     } catch (error: any) {
       if (error.response) {
         setFormError(error.response.data?.message || "Registration failed");
@@ -142,7 +147,7 @@ const Page = () => {
               label="Email"
               type="email"
               value={email}
-              onChange={handleEmailChange} // Use new handler
+              onChange={handleEmailChange}
               placeholder="Enter your email"
               error={emailError}
             />
@@ -153,7 +158,7 @@ const Page = () => {
               label="Password"
               type="password"
               value={password}
-              onChange={handlePasswordChange} // Use new handler
+              onChange={handlePasswordChange}
               placeholder="Enter your password"
               error={passwordError}
             />

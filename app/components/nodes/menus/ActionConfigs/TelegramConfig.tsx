@@ -61,7 +61,6 @@ export default function TelegramConfig({
         return;
       }
 
-      // FIX: Removed workflow_id. The backend handles the secret now.
       await saveCredential({
         name: ProviderEnum.Telegram,
         credential: { key: token },
@@ -76,7 +75,6 @@ export default function TelegramConfig({
     }
   };
 
-  // STEP 1: No Connection at all
   if (!isTokenSaved) {
     return (
       <div className="space-y-4 animate-in fade-in slide-in-from-bottom-2">

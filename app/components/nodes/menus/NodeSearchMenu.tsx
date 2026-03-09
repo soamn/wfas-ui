@@ -101,7 +101,7 @@ export default function SearchMenu({ position, onClose }: SearchMenuProps) {
 
   return (
     <div
-      className="fixed bg-white dark:bg-[#121212] shadow-2xl border border-zinc-200 dark:border-zinc-800 rounded-2xl p-2 z-[100] w-72 flex flex-col gap-1 outline-none animate-in fade-in zoom-in-95 duration-100"
+      className="fixed bg-white dark:bg-[#121212] shadow-2xl border border-zinc-200 dark:border-zinc-800 rounded-2xl p-2 z-100 w-72 flex flex-col gap-1 outline-none animate-in fade-in zoom-in-95 duration-100"
       style={{ top: position.y, left: position.x }}
       onKeyDown={handleKeyDown}
       onMouseLeave={onClose}

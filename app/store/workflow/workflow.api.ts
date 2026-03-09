@@ -1,15 +1,17 @@
 import axios from "axios";
-import { config } from "@/app/config/config";
 import { WorkflowPayload } from "../node/node.schema";
+
+const api = axios.create({
+  baseURL: "/api",
+  withCredentials: true,
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
 
 export const getAllWorkflows = async () => {
   try {
-    const response = await axios({
-      method: "GET",
-      url: `${config.BACKEND_SERVER_URL}/api/workflow`,
-      withCredentials: true,
-    });
-
+    const response = await api.get("/workflow");
     return response.data;
   } catch (error) {
     return null;
@@ -18,29 +20,18 @@ export const getAllWorkflows = async () => {
 
 export const getWorkflow = async (id: WorkflowPayload["id"]) => {
   try {
-    const response = await axios({
-      method: "GET",
-      url: `${config.BACKEND_SERVER_URL}/api/workflow/${id}`,
-      withCredentials: true,
-    });
-
+    const response = await api.get(`/workflow/${id}`);
     return response.data;
-  } catch (error) {}
+  } catch (error) {
+    return null;
+  }
 };
 
 export const createWorkflowRequest = async (
   workflowPayload: WorkflowPayload,
 ) => {
   try {
-    await axios({
-      method: "POST",
-      url: `${config.BACKEND_SERVER_URL}/api/workflow/create`,
-      data: workflowPayload,
-      headers: {
-        "Content-Type": "application/json",
-      },
-      withCredentials: true,
-    });
+    await api.post("/workflow/create", workflowPayload);
   } catch (error) {}
 };
 
@@ -48,71 +39,40 @@ export const updateWorkflowRequest = async (
   workflowPayload: WorkflowPayload,
 ) => {
   try {
-    await axios({
-      method: "PUT",
-      url: `${config.BACKEND_SERVER_URL}/api/workflow/update/${workflowPayload.id}`,
-      data: workflowPayload,
-      headers: {
-        "Content-Type": "application/json",
-      },
-      withCredentials: true,
-    });
+    await api.put(`/workflow/update/${workflowPayload.id}`, workflowPayload);
   } catch (error) {}
 };
 
 export const getRecentExecutions = async () => {
   try {
-    const response = await axios({
-      method: "GET",
-      url: `${config.BACKEND_SERVER_URL}/api/execution/`,
-      withCredentials: true,
-    });
-
+    const response = await api.get("/execution/");
     return response.data;
   } catch (error) {
-    console.error("Failed to fetch workflow executions:", error);
     return null;
   }
 };
 
 export const getWorkflowExecutions = async (id: WorkflowPayload["id"]) => {
   try {
-    const response = await axios({
-      method: "GET",
-      url: `${config.BACKEND_SERVER_URL}/api/execution/workflow/${id}`,
-      withCredentials: true,
-    });
-
+    const response = await api.get(`/execution/workflow/${id}`);
     return response.data;
   } catch (error) {
-    console.error("Failed to fetch workflow executions:", error);
     return null;
   }
 };
 
 export const getExecutionResult = async (id: string) => {
   try {
-    const response = await axios({
-      method: "GET",
-      url: `${config.BACKEND_SERVER_URL}/api/execution/${id}`,
-      withCredentials: true,
-    });
+    const response = await api.get(`/execution/${id}`);
     return response.data;
   } catch (error) {
-    console.error("Failed to fetch execution result:", error);
     return null;
   }
 };
 
 export const executeWorkflowRequest = async (id: WorkflowPayload["id"]) => {
   try {
-    const response = await axios({
-      method: "GET",
-      url: `${config.BACKEND_SERVER_URL}/api/workflow/execute/${id}`,
-      withCredentials: true,
-    });
-
-    return response;
+    return await api.get(`/workflow/execute/${id}`);
   } catch (error) {
     return null;
   }
@@ -120,28 +80,18 @@ export const executeWorkflowRequest = async (id: WorkflowPayload["id"]) => {
 
 export const deleteWorkflow = async (id: WorkflowPayload["id"]) => {
   try {
-    await axios({
-      method: "DELETE",
-      url: `${config.BACKEND_SERVER_URL}/api/workflow/${id}`,
-      withCredentials: true,
-    });
+    await api.delete(`/workflow/${id}`);
     return true;
   } catch (error) {
-    console.error("Failed to delete workflow:", error);
     return false;
   }
 };
 
 export const deleteExecution = async (id: string) => {
   try {
-    await axios({
-      method: "DELETE",
-      url: `${config.BACKEND_SERVER_URL}/api/execution/${id}`,
-      withCredentials: true,
-    });
+    await api.delete(`/execution/${id}`);
     return true;
   } catch (error) {
-    console.error("Failed to delete execution:", error);
     return false;
   }
 };

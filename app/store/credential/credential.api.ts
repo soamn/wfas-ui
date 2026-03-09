@@ -1,30 +1,26 @@
 import axios from "axios";
-import { config } from "@/app/config/config";
 import { CredentialType } from "./credential.types";
 import toast from "react-hot-toast";
 
+const api = axios.create({
+  baseURL: "/api/credential",
+  withCredentials: true,
+  headers: { "Content-Type": "application/json" },
+});
+
+const handleApiError = (error: any, defaultMsg: string) => {
+  const message = error.response?.data?.error?.message || defaultMsg;
+  toast.error(message, {
+    id: "credential-error",
+    style: { borderRadius: "12px", background: "#333", color: "#fff" },
+  });
+};
+
 export const saveCredential = async (credential: CredentialType) => {
   try {
-    const url = `${config.BACKEND_SERVER_URL}/api/credential/create`;
-    const response = await axios({
-      method: "POST",
-      url,
-      data: credential,
-      headers: { "Content-Type": "application/json" },
-      withCredentials: true,
-    });
-    return response;
+    return await api.post("/create", credential);
   } catch (error: any) {
-    const message =
-      error.response?.data?.error.message || "Failed to save credential";
-    toast.error(message, {
-      id: "credential-error",
-      style: {
-        borderRadius: "12px",
-        background: "#333",
-        color: "#fff",
-      },
-    });
+    handleApiError(error, "Failed to save credential");
   }
 };
 
@@ -32,63 +28,23 @@ export const deleteCredential = async (
   credentialName: CredentialType["name"],
 ) => {
   try {
-    const response = await axios({
-      method: "DELETE",
-      url: `${config.BACKEND_SERVER_URL}/api/credential/delete`,
-      data: { name: credentialName },
-      headers: { "Content-Type": "application/json" },
-      withCredentials: true,
-    });
-    return response;
+    return await api.delete("/delete", { data: { name: credentialName } });
   } catch (error: any) {
-    const message =
-      error.response?.data?.error.message || "Failed to delete credential";
-    toast.error(message, {
-      id: "credential-error",
-      style: {
-        borderRadius: "12px",
-        background: "#333",
-        color: "#fff",
-      },
-    });
+    handleApiError(error, "Failed to delete credential");
   }
 };
 
 export const createWebhookCredential = async (credential: CredentialType) => {
   try {
-    const response = await axios({
-      method: "POST",
-      url: `${config.BACKEND_SERVER_URL}/api/credential/webhook`,
-      data: credential,
-      headers: { "Content-Type": "application/json" },
-      withCredentials: true,
-    });
-    return response;
+    return await api.post("/webhook", credential);
   } catch (error: any) {
-    const message =
-      error.response?.data?.error.message || "Failed to configure credential";
-    toast.error(message, {
-      id: "credential-error",
-      style: {
-        borderRadius: "12px",
-        background: "#333",
-        color: "#fff",
-      },
-    });
+    handleApiError(error, "Failed to configure credential");
   }
 };
 
 export const verifyCredential = async (credential: CredentialType) => {
   try {
-    const response = await axios({
-      method: "POST",
-      url: `${config.BACKEND_SERVER_URL}/api/credential/verify`,
-      data: credential,
-      headers: {
-        "Content-Type": "application/json",
-      },
-      withCredentials: true,
-    });
+    const response = await api.post("/verify", credential);
     return response?.data;
   } catch (error) {
     return false;

@@ -517,51 +517,44 @@ const LandingPage = () => {
         </div>
       </section>
 
-      {/* Auto-Scrolling Reviews Section - VERTICAL GRID */}
       <section className="py-16 px-4 bg-gray-100 dark:bg-zinc-950">
         <h2 className="text-3xl md:text-4xl font-bold text-center mb-12">
           What Our Users Say
         </h2>
-        <div className="relative mx-auto max-w-4xl h-[450px] overflow-hidden group">
-          {/* Gradient mask for fading effect */}
+        <div className="relative mx-auto max-w-4xl h-112.5 overflow-hidden group">
           <div
             className="absolute inset-0 z-10 pointer-events-none
-                        bg-gradient-to-b from-gray-100 dark:from-zinc-950 via-transparent to-gray-100 dark:to-zinc-950"
+                        bg-linear-to-b from-gray-100 dark:from-zinc-950 via-transparent to-gray-100 dark:to-zinc-950"
           ></div>
 
           <div className="absolute inset-0 flex flex-col justify-around animate-vertical-scroll">
-            {[...reviews, ...reviews].map(
-              (
-                review,
-                index, // Duplicate reviews twice for seamless loop
-              ) => (
-                <div
-                  key={index}
-                  className="flex-none p-6 mx-auto w-full sm:w-11/12 md:w-full lg:w-full
+            {[...reviews, ...reviews].map((review, index) => (
+              <div
+                key={index}
+                className="flex-none p-6 mx-auto w-full sm:w-11/12 md:w-full lg:w-full
                            bg-white dark:bg-zinc-800 rounded-lg shadow-md border border-gray-200 dark:border-zinc-700
                            mb-4" // Added margin-bottom to separate reviews
-                >
-                  <div className="flex items-center mb-4">
-                    {[...Array(review.rating)].map((_, i) => (
-                      <svg
-                        key={i}
-                        className="w-5 h-5 text-yellow-500"
-                        fill="currentColor"
-                        viewBox="0 0 20 20"
-                      >
-                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.538 1.118l-2.8-2.034a1 1 0 00-1.176 0l-2.8 2.034c-.783.57-1.838-.197-1.538-1.118l1.07-3.292a1 1 0 00-.364-1.118l-2.8-2.034c-.783-.57-.38-1.81.588-1.81h3.462a1 1 0 00.95-.69l1.07-3.292z" />
-                      </svg>
-                    ))}
-                  </div>
-                  <p className="text-gray-700 dark:text-gray-300 mb-4 text-left">
-                    &quot;{review.text}&quot;
-                  </p>
-                  <p className="font-semibold text-gray-800 dark:text-gray-100 text-left">
-                    - {review.author}
-                  </p>
+              >
+                <div className="flex items-center mb-4">
+                  {[...Array(review.rating)].map((_, i) => (
+                    <svg
+                      key={i}
+                      className="w-5 h-5 text-yellow-500"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.538 1.118l-2.8-2.034a1 1 0 00-1.176 0l-2.8 2.034c-.783.57-1.838-.197-1.538-1.118l1.07-3.292a1 1 0 00-.364-1.118l-2.8-2.034c-.783-.57-.38-1.81.588-1.81h3.462a1 1 0 00.95-.69l1.07-3.292z" />
+                    </svg>
+                  ))}
                 </div>
-              ),
-            )}
+                <p className="text-gray-700 dark:text-gray-300 mb-4 text-left">
+                  &quot;{review.text}&quot;
+                </p>
+                <p className="font-semibold text-gray-800 dark:text-gray-100 text-left">
+                  - {review.author}
+                </p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
