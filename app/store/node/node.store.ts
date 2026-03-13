@@ -44,6 +44,8 @@ interface FlowState {
   executeWorkflow: () => void;
   saveWorkflow: () => void;
   pollWorkflow: (nodeId: string) => void;
+  stopPolling: () => void;
+  pollingTimerId: ReturnType<typeof setTimeout> | null;
   validateWorkflow: (nodes: Node[], edges: Edge[]) => boolean;
 }
 
@@ -52,6 +54,7 @@ export const useFlowStore = create<FlowState>((set, get) => ({
   edges: [],
   selectedNodeId: null,
   isDirty: false,
+  pollingTimerId: null,
 
   validateWorkflow: (nodes, edges) => {
     const ENTRY_TYPES = ["WEBHOOK", "TRIGGER"];
@@ -289,13 +292,37 @@ export const useFlowStore = create<FlowState>((set, get) => ({
       nodes: backendPayloadofNodes,
     };
   },
+  stopPolling: () => {
+    const timerId = get().pollingTimerId;
+    if (timerId) {
+      clearTimeout(timerId);
+      set({ pollingTimerId: null });
+    }
+  },
   pollWorkflow: async (id: string) => {
+    get().stopPolling();
+    let attempts = 0;
+    const MAX_ATTEMPTS = 30;
+
     const poll = async () => {
+      attempts++;
+      if (attempts > MAX_ATTEMPTS) {
+        toast(
+          "Workflow Taking Longer than usual come back later or Resave and Rerun",
+          {
+            icon: "⏳",
+          },
+        );
+        get().stopPolling();
+        return;
+      }
       try {
         const workflow = await getWorkflow(id);
         if (!workflow) return;
+
         useWorkflowStore.setState({ state: workflow.state });
-        const { nodes: currentNodes, setNodes, setFlow } = get();
+
+        const { nodes: currentNodes } = get();
         const updatedNodes = currentNodes.map((node) => {
           const backendNode = workflow.nodes.find(
             (bn: any) => bn.id === node.id,
@@ -314,18 +341,22 @@ export const useFlowStore = create<FlowState>((set, get) => ({
         });
 
         set({ nodes: updatedNodes });
-
-        const isFinished = ["success", "failed", "completed"].includes(
-          workflow.status,
-        );
-
-        if (!isFinished) {
-          setTimeout(poll, 2000);
-        } else {
-          useWorkflowStore.setState({ state: workflow.status });
-          toast.success(`Workflow ${workflow.status}`);
+        if (workflow.state !== "Running") {
+          get().stopPolling();
+          return;
         }
-      } catch (error) {}
+        let nextDelay = 3000;
+        if (attempts > 20) {
+          nextDelay = 30000;
+        } else if (attempts > 8) {
+          nextDelay = 10000;
+        }
+        const nextTimerId = setTimeout(poll, nextDelay);
+        set({ pollingTimerId: nextTimerId });
+      } catch (error) {
+        console.error("Polling error:", error);
+        get().stopPolling();
+      }
     };
 
     poll();
@@ -380,10 +411,12 @@ export const useFlowStore = create<FlowState>((set, get) => ({
       await updateWorkflowRequest(fullPayload);
       set({ isDirty: false });
     }
+    executeWorkflowRequest(validation.data.id);
     useWorkflowStore.setState({ state: "Running" });
-    toast.success("Workflow execution started");
+    if (useWorkflowStore.getState().state === "Running") {
+      toast.success("Workflow execution started");
+    }
     get().pollWorkflow(validation.data.id);
-    await executeWorkflowRequest(validation.data.id);
   },
 
   saveWorkflow: async () => {
@@ -424,15 +457,21 @@ export const useFlowStore = create<FlowState>((set, get) => ({
     }
 
     const workflowExists = await getWorkflow(validation.data.id);
+    let savedWorkflow;
     if (!workflowExists) {
-      await createWorkflowRequest(fullPayload);
+      const result = await createWorkflowRequest(fullPayload);
+      savedWorkflow = result?.data;
       toast.success("Workflow  created");
       useWorkflowStore.setState({ isEditing: true });
     } else if (isDirty) {
-      await updateWorkflowRequest(fullPayload);
+      const result = await updateWorkflowRequest(fullPayload);
+      savedWorkflow = result?.data;
       toast.success("Workflow  updated");
       set({ isDirty: false });
     }
-    useWorkflowStore.setState({ state: "Draft" });
+    if (savedWorkflow) {
+      useWorkflowStore.setState({ state: savedWorkflow.state });
+    }
+    savedWorkflow = null;
   },
 }));

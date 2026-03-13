@@ -11,6 +11,7 @@ export const metadata: Metadata = {
     default: "WFAS - Workflow Automation System",
     template: "%s | WFAS",
   },
+  metadataBase: new URL(process.env.DOMAIN || "http://localhost:3000"),
   description:
     "WFAS is a powerful workflow automation platform for building, executing, and managing automated workflows.",
 

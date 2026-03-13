@@ -31,7 +31,7 @@ export const createWorkflowRequest = async (
   workflowPayload: WorkflowPayload,
 ) => {
   try {
-    await api.post("/workflow/create", workflowPayload);
+    return await api.post("/workflow/create", workflowPayload);
   } catch (error) {}
 };
 
@@ -39,7 +39,10 @@ export const updateWorkflowRequest = async (
   workflowPayload: WorkflowPayload,
 ) => {
   try {
-    await api.put(`/workflow/update/${workflowPayload.id}`, workflowPayload);
+    return await api.put(
+      `/workflow/update/${workflowPayload.id}`,
+      workflowPayload,
+    );
   } catch (error) {}
 };
 

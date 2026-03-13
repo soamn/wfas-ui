@@ -19,7 +19,7 @@ import WorkflowSettings from "@/app/components/nodes/menus/WorkflowSettings";
 import { useWorkflowShortcuts } from "@/app/hooks/useWorkflowEvents";
 import { useTheme } from "@/app/provider/theme-provider";
 import { MdSettings, MdPlayArrow, MdSchedule } from "react-icons/md";
-import { FaStopCircle } from "react-icons/fa";
+import { FaSpinner } from "react-icons/fa";
 import { useWorkflowStore } from "@/app/store/workflow/workflow.store";
 import { NodeType } from "@/app/store/node/node.registry";
 import { BiPencil } from "react-icons/bi";
@@ -120,6 +120,7 @@ export default function WorkflowCanvas({
 
         <Panel position="bottom-center" className="pb-20">
           <button
+            disabled={state === "Running" || state === "Scheduled"}
             onClick={() => {
               if (state === "Running") {
                 toast("workflow is running");
@@ -143,7 +144,7 @@ export default function WorkflowCanvas({
           >
             {state === "Running" ? (
               <>
-                <FaStopCircle className="animate-spin" />
+                <FaSpinner className="animate-spin" />
                 <span className="text-[10px]">Executing</span>
               </>
             ) : state === "Scheduled" ? (
