@@ -7,10 +7,12 @@ export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   if (pathname.startsWith("/api")) {
-    const targetUrl = new URL(request.url);
-    return NextResponse.rewrite(
-      `${cfg.BACKEND_SERVER_URL}${pathname}${targetUrl.search}`,
+    const target = new URL(
+      `${pathname}${request.nextUrl.search}`,
+      cfg.BACKEND_SERVER_URL,
     );
+
+    return NextResponse.rewrite(target);
   }
 
   const isPublicRoute = ["/login", "/register", "/"].includes(pathname);

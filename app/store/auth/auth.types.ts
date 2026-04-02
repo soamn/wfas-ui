@@ -3,7 +3,7 @@ import { CredentialType } from "../credential/credential.types";
 
 export const loginSchema = z.object({
   email: z.email("Invalid email address"),
-  password: z.string().min(2, "Password must be at least 6 characters"),
+  password: z.string().min(6, "Password must be at least 6 characters"),
 });
 
 export const registerSchema = z.object({

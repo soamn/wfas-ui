@@ -47,6 +47,7 @@ export default function SwitchMenu({ id }: { id: string }) {
     if (!config) return;
 
     let needsUpdate = false;
+
     const updatedCases = config.cases.map((c) => {
       const conn = connections.find((conn) => conn.sourceHandle === c.id);
       const targetId = conn?.target || "";
@@ -63,8 +64,12 @@ export default function SwitchMenu({ id }: { id: string }) {
     );
     const updatedDefaultId = defaultConn?.target || "";
 
-    if (needsUpdate || updatedDefaultId !== config.defaultNodeId) {
-      requestAnimationFrame(() => {
+    if (updatedDefaultId !== config.defaultNodeId) {
+      needsUpdate = true;
+    }
+
+    if (needsUpdate) {
+      const timeout = setTimeout(() => {
         updateField(
           {
             cases: updatedCases,
@@ -72,7 +77,9 @@ export default function SwitchMenu({ id }: { id: string }) {
           },
           true,
         );
-      });
+      }, 0);
+
+      return () => clearTimeout(timeout);
     }
   }, [connections]);
 
@@ -88,13 +95,16 @@ export default function SwitchMenu({ id }: { id: string }) {
     [id, updateNodeConfig],
   );
 
-  const updateField = (updates: Partial<SwitchConfig>, immediate = false) => {
-    setConfig((prev) => {
-      const next = { ...prev, ...updates };
-      saveToStore(next, immediate);
-      return next;
-    });
-  };
+  const updateField = useCallback(
+    (updates: Partial<SwitchConfig>, immediate = false) => {
+      setConfig((prev) => {
+        const next = { ...prev, ...updates };
+        saveToStore(next, immediate);
+        return next;
+      });
+    },
+    [saveToStore],
+  );
 
   const updateCaseItem = (
     caseId: string,
