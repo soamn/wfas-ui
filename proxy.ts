@@ -1,19 +1,9 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { config as cfg } from "./app/config/config";
 
 export function proxy(request: NextRequest) {
   const session = request.cookies.get("connect.sid");
   const { pathname } = request.nextUrl;
-
-  if (pathname.startsWith("/api")) {
-    const target = new URL(
-      `${pathname}${request.nextUrl.search}`,
-      cfg.BACKEND_SERVER_URL,
-    );
-
-    return NextResponse.rewrite(target);
-  }
 
   const isPublicRoute = ["/login", "/register", "/"].includes(pathname);
 

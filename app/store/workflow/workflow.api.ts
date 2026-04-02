@@ -1,8 +1,9 @@
 import axios from "axios";
 import { WorkflowPayload } from "../node/node.schema";
+import { config } from "@/app/config/config";
 
 const api = axios.create({
-  baseURL: "/api",
+  baseURL: `${config.BACKEND_SERVER_URL}/api`,
   withCredentials: true,
   headers: {
     "Content-Type": "application/json",

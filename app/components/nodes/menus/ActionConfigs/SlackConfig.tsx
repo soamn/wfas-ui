@@ -56,7 +56,7 @@ export default function SlackConfig({
     const syncSlackData = async () => {
       setLoading(true);
       try {
-        const response = await axios.get(`/api/credential/slack/channels`, {
+        const response = await axios.get(`${config.BACKEND_SERVER_URL}/api/credential/slack/channels`, {
           withCredentials: true,
         });
         const channelData = response.data;

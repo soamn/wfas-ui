@@ -48,7 +48,7 @@ export default function GoogleSheetsConfig({
     if (sheetsLoaded.current && !force) return;
     setLoading((prev) => ({ ...prev, sheets: true }));
     try {
-      const { data } = await axios.get(`/api/credential/google/sheets`, {
+      const { data } = await axios.get(`${config.BACKEND_SERVER_URL}/api/credential/google/sheets`, {
         withCredentials: true,
       });
       setSheetsList(data);
@@ -75,7 +75,7 @@ export default function GoogleSheetsConfig({
         setLoading((prev) => ({ ...prev, tabs: true }));
         try {
           const { data } = await axios.get(
-            `/api/credential/google/sheets/${id}/tabs`,
+            `${config.BACKEND_SERVER_URL}/api/credential/google/sheets/${id}/tabs`,
             { withCredentials: true },
           );
           setTabs(data);
@@ -100,7 +100,7 @@ export default function GoogleSheetsConfig({
         setLoading((prev) => ({ ...prev, headers: true }));
         try {
           const { data } = await axios.get(
-            `/api/credential/google/sheets/${id}/headers?sheetName=${tab}`,
+            `${config.BACKEND_SERVER_URL}/api/credential/google/sheets/${id}/headers?sheetName=${tab}`,
             { withCredentials: true },
           );
           setHeaders(Array.isArray(data.headers) ? data.headers : []);

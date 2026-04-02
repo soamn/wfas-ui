@@ -1,8 +1,9 @@
 import axios from "axios";
 import { LoginType, RegisterType } from "./auth.types";
+import { config } from "@/app/config/config";
 
 const api = axios.create({
-  baseURL: "/api",
+  baseURL: `${config.BACKEND_SERVER_URL}/api`,
   withCredentials: true,
 });
 

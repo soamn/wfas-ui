@@ -1,9 +1,9 @@
 import axios from "axios";
 import { CredentialType } from "./credential.types";
 import toast from "react-hot-toast";
-
+import { config } from "@/app/config/config";
 const api = axios.create({
-  baseURL: "/api/credential",
+  baseURL: `${config.BACKEND_SERVER_URL}/api`,
   withCredentials: true,
   headers: { "Content-Type": "application/json" },
 });
